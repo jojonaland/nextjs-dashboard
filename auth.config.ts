@@ -18,6 +18,22 @@ export const authConfig = {
       }
       return true;
     },
+    // Callback pour la session de l'utilisateur
+    async session({ session, user }) {
+      console.log('Session data:', session);
+      console.log('User data:', user);
+      return session;
+    },
+
+    // Callback pour le JWT (JSON Web Token)
+    async jwt({ token, user }) {
+      if (user) {
+        console.log('JWT - User data:', user);
+        token.id = user.id;
+        token.email = user.email;
+      }
+      return token;
+    },
   },
   providers: [], // Add providers with an empty array for now
 }satisfies NextAuthConfig;    
