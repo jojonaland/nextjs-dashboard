@@ -40,4 +40,4 @@ export const authConfig = {
 } satisfies NextAuthConfig;    
 
 console.log('Auth configuration loaded:', authConfig);
-console.log('NEXTAUTH_SECRET:', process.env.AUTH_SECRET);
+console.log('NEXTAUTH_SECRET:', process.env.NEXTAUTH_SECRET);
