@@ -28,18 +28,27 @@ export const { auth, signIn, signOut } = NextAuth({
 
             const parsedCredentials = z
               .object({ email: z.string().email(), password: z.string().min(6) })
-              .safeParse(credentials);
-            
-              if (parsedCredentials.success) {
-                const { email, password } = parsedCredentials.data;
-                console.log('Parsed email:', email);
-                const user = await getUser(email);
-                if (!user) {
-                  console.log('No user found with email:', email);
-                  return null;}
+              .safeParse({
+                email: credentials?.email,
+                password: credentials?.password,
+              });
 
-                console.log('Password received:', password);
-                console.log('Hashed password from DB:', user.password);
+              if (!parsedCredentials.success) {
+                console.log('Invalid credentials format');
+                return null;
+              }
+            
+              const { email, password } = parsedCredentials.data;
+        console.log('Parsed email:', email);
+
+        const user = await getUser(email);
+        if (!user) {
+          console.log('No user found with email:', email);
+          return null;
+        } 
+
+        console.log('Password received (hidden for security)');
+        console.log('Hashed password from DB:', user.password);
                 
                 const passwordsMatch = await bcrypt.compare(password, user.password);
                 
@@ -51,8 +60,7 @@ export const { auth, signIn, signOut } = NextAuth({
                 } else {
                   console.log('Incorrect password');
                 }
-            }
-            console.log('Invalid credentials');
+            
             return null;
         },
     })

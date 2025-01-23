@@ -20,19 +20,39 @@ export const authConfig = {
       return true;
     },
     // Callback pour la session de l'utilisateur
-    async session({ session, user }) {
-      console.log('Session data:', session);
-      console.log('User data:', user);
+    async session({ session, token }) {
+      console.log('Session callback triggered');
+      console.log('Initial session data:', session);
+      console.log('Token data:', token);
+
+      if (token?.id) {
+        session.user = {
+          id: token.id as string,
+          email: token.email as string,
+          name: token.name as string,
+          emailVerified: null,
+        };
+      }
+
+      console.log('Session updated with user:', session.user);
       return session;
     },
 
     // Callback pour le JWT (JSON Web Token)
     async jwt({ token, user }) {
+      console.log('JWT callback triggered');
+      console.log('Initial JWT token:', token);
+
       if (user) {
         console.log('JWT - User data:', user);
         token.id = user.id;
         token.email = user.email;
+        token.name = user.name;
+      } else {
+        console.log('No user data passed to JWT callback');
       }
+
+      console.log('Updated JWT token:', token);
       return token;
     },
   },
