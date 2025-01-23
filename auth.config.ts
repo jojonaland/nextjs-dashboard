@@ -59,5 +59,9 @@ export const authConfig = {
   providers: [], // Add providers with an empty array for now
 } satisfies NextAuthConfig;    
 
+if (!process.env.NEXTAUTH_SECRET) {
+  throw new Error('Missing NEXTAUTH_SECRET. Make sure it is set in the environment variables.');
+}
+
 console.log('Auth configuration loaded:', authConfig);
 console.log('NEXTAUTH_SECRET:', process.env.NEXTAUTH_SECRET);
