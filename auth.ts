@@ -41,6 +41,9 @@ export const { auth, signIn, signOut } = NextAuth({
               const { email, password } = parsedCredentials.data;
         console.log('Parsed email:', email);
 
+        // Log du callbackUrl
+        console.log('callbackUrl received:', credentials?.callbackUrl);
+
         const user = await getUser(email);
         if (!user) {
           console.log('No user found with email:', email);

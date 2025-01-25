@@ -7,8 +7,13 @@ export const authConfig = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
+      console.log('Checking authorization...');
+      console.log('Current nextUrl:', nextUrl);
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      const callbackUrl = nextUrl.searchParams.get('callbackUrl');
+      console.log('Callback URL from request:', callbackUrl);
+    
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         console.log('Redirecting unauthenticated user to login page');
